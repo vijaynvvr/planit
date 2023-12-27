@@ -7,7 +7,7 @@ const todoRoute = require('./routes/todos');
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({origin:"http://localhost:1234", credentials:true}))
+app.use(cors({origin:process.env.CLIENT_URL, credentials:true}))
 
 require('dotenv').config();
 const PORT = process.env.PORT || 5000;
