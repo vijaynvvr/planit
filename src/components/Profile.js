@@ -9,7 +9,7 @@ const Profile = () => {
 	const {username, email} = useContext(UserContext);
 	// if (!isLoggedIn) return <Navigate to="/login"/>
 	// if (!isLoggedIn) navigate('/login');
-	INITIAL_USERINFO = {
+	const INITIAL_USERINFO = {
 		title: "",
 		body: "",
 	};
