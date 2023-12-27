@@ -1,0 +1,29 @@
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const authRoute = require('./routes/auth');
+const todoRoute = require('./routes/todos');
+
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({origin:"http://localhost:1234", credentials:true}))
+
+require('dotenv').config();
+const PORT = process.env.PORT || 5000;
+
+const connectWithDb = require('./config/db');
+connectWithDb();
+
+app.use("/api/auth", authRoute);
+app.use("/api/todo", todoRoute);
+
+
+app.listen(PORT, () => {
+    console.log('App started on port no. ' + PORT);
+})
+
+app.get('/', (req, res) => {
+    res.send("Welcome");
+})
+
