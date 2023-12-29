@@ -4,6 +4,7 @@ import UserContext from "../context/UserContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProfileCard from "./ProfileCard";
+import { TiDeleteOutline } from "react-icons/ti";
 
 const Profile = () => {
 	const {username, email} = useContext(UserContext);
@@ -59,13 +60,9 @@ const Profile = () => {
 	const addTodos = async (event) => {
 		event.preventDefault();
 		if (validateTodos(todos.title, todos.body)) {
-			const data = await fetch(
-				process.env.BACKEND_URL + "api/todo/createTodo",
-				{
+			const data = await fetch(`${process.env.BACKEND_URL}api/todo/createTodo`, {
 					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
+					headers: {"Content-Type": "application/json"},
 					body: JSON.stringify(todos),
 					credentials: "include", // to include cookies and headers
 				}
@@ -73,7 +70,7 @@ const Profile = () => {
 			const jsonData = await data.json();
 			if (jsonData.success) {
 				setTodos(INITIAL_USERINFO);
-				success("Todos added");
+				success("Todo added");
                 setMyTodoList(prev => [...prev, jsonData.data]);
 			} else {
 				warning(jsonData.message);
@@ -83,14 +80,35 @@ const Profile = () => {
 		}
 	};
 
+    const deleteTodo = async (id) => {
+        try {
+            // Make a DELETE request to your backend API to delete the todo by ID
+            const response = await fetch(`${process.env.BACKEND_URL}api/todo/deleteTodo/${id}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+            const jsonData = await response.json();
+            if (jsonData.success) {
+                // If the deletion was successful, update the local state to remove the deleted todo
+                setMyTodoList(prev => prev.filter(todo => todo._id !== id));
+                success('Todo deleted');
+            } else {
+                warning(jsonData.message || 'Failed to delete todo');
+            }
+        } catch (error) {
+            console.error('Error deleting todo:', error);
+            warning('Failed to delete todo');
+        }
+    }
+
 	return (
 		<Fragment>
 			<form
-				className="flex flex-col w-6/12 mx-auto my-12 items-center gap-8"
+				className="flex flex-col sm:w-10/12 md:w-9/12 lg:w-7/12 mx-auto my-12 items-center gap-8"
 				onSubmit={addTodos}
 			>
-                <ProfileCard icon={username[0].toUpperCase()} name={username} email={email}/>
-				<h1 className="text-2xl">Plan yo day</h1>
+				<h1 className="text-4xl font-bold">Plan yo day</h1>
+                <ProfileCard className="w-full" icon={username[0].toUpperCase()} name={username} email={email}/>
 				<input
 					className="w-full p-2 border-2 border-black focus:rounded-lg"
 					type="text"
@@ -111,12 +129,15 @@ const Profile = () => {
 					Add it
 				</button>
 			</form>
-			<ul className="flex flex-col w-6/12 mx-auto my-12 gap-4">
+			<ul className="flex flex-col sm:w-10/12 md:w-9/12 lg:w-7/12 mx-auto my-12 gap-4 px-2">
 				{myTodoList?.map((todo) => {
 					return (
-						<li key={todo._id} className="flex flex-col gap-2">
-							<h1>{todo.title}</h1>
-							<p>{todo.body}</p>
+						<li key={todo._id} className="flex justify-between items-center">
+                            <div>
+                                <h1 className="font-bold text-xl">{todo.title}</h1>
+                                <p className="text-lg">{todo.body}</p>
+                            </div>
+                            <span className="text-4xl hover:text-gray-400" onClick={() => deleteTodo(todo._id)}><TiDeleteOutline /></span>
 						</li>
 					);
 				})}

@@ -19,7 +19,7 @@ const BACKEND_URL = process.env.BACKEND_URL;
 const App = () => {
     return (
         <UserContextProvider>
-            <div className="w-8/12 h-screen mx-auto p-4">
+            <div className="md:w-8/12 h-screen mx-auto p-4">
                 <Header />
                 <Outlet />
             </div>

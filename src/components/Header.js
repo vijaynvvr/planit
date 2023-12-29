@@ -5,8 +5,8 @@ import UserContext from '../context/UserContext';
 const Header = () => {
     const {isLoggedIn, username, logoutHandler} = useContext(UserContext)
     return (
-        <div className='flex justify-between text-xl'>
-            <Link to="/">PlanIt</Link>
+        <div className='flex justify-between text-2xl'>
+            <Link className='font-bold text-3xl' to="/">PlanIT</Link>
             { isLoggedIn ? (
                 <div className='flex gap-4'>
                     <Link to="/profile">{username}</Link>

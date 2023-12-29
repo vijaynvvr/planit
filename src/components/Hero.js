@@ -18,8 +18,8 @@ const Hero = () => {
     }
 	return (
 		<div className="flex flex-col mx-auto my-24 items-center gap-8">
-			<h1 className="text-5xl">PlanIt</h1>
-			<p className="text-xl italic tracking-widest">
+			<h1 className="text-4xl font-bold">PlanIt</h1>
+			<p className="text-xl italic tracking-widest text-center">
 				Plan your day, and look at others' plans
 			</p>
             <div className="flex flex-col items-center gap-4">

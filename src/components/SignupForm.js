@@ -61,10 +61,10 @@ const SignupForm = () => {
 	};
 	return (
 		<form
-			className="flex flex-col w-6/12 mx-auto my-24 items-center gap-8"
+			className="flex flex-col md:w-7/12 mx-auto my-24 items-center gap-8"
 			onSubmit={onSignup}
 		>
-			<h1 className="text-2xl">Signup Form</h1>
+			<h1 className="text-4xl">Signup Form</h1>
 			<input
 				className="p-2 border-2 border-black"
 				type="text"
@@ -92,7 +92,7 @@ const SignupForm = () => {
 			<button className="px-4 py-2 rounded-lg border-2 border-black hover:shadow-lg">
 				Signup
 			</button>
-			<p className="tracking-widest text-gray-600">
+			<p className="tracking-widest text-gray-600 text-center">
 				Already registered?{" "}
 				<Link
 					className="hover:text-black hover:drop-shadow-xl"
