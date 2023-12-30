@@ -3,13 +3,14 @@ import { Link, useNavigate, Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserContext from "../context/UserContext";
+import ReactLoading from "react-loading";
 
 const LoginForm = () => {
-    const {isLoggedIn, loginHandler} = useContext(UserContext);
-    // if (isLoggedIn) return <Navigate to="/profile"/>
+	const { isLoggedIn, loginHandler } = useContext(UserContext);
+	// if (isLoggedIn) return <Navigate to="/profile"/>
 	const navigate = useNavigate();
-    // if (isLoggedIn) navigate("/profile");
-
+	// if (isLoggedIn) navigate("/profile");
+	const [isLoading, setIsLoading] = useState(false);
 
 	const validateContactInfo = (email, password) => {
 		if (email && password) return true;
@@ -37,6 +38,7 @@ const LoginForm = () => {
 	};
 
 	const onLogin = async (event) => {
+        setIsLoading(true);
 		event.preventDefault();
 		if (validateContactInfo(userInfo.email, userInfo.password)) {
 			const data = await fetch(
@@ -47,24 +49,26 @@ const LoginForm = () => {
 						"Content-Type": "application/json",
 					},
 					body: JSON.stringify(userInfo),
-                    credentials: "include", // to include cookies and headers
+					credentials: "include", // to include cookies and headers
 				}
 			);
 			const jsonData = await data.json();
-            if (jsonData.success) {
-                setUserInfo(INITIAL_USERINFO);
-                loginHandler();
-                navigate('/profile')
-            }
-            else {
-                warning(jsonData.message);
-            }
+			if (jsonData.success) {
+				setUserInfo(INITIAL_USERINFO);
+				loginHandler();
+				navigate("/profile");
+			} else {
+				warning(jsonData.message);
+			}
 		} else {
 			warning("Please fill all details");
 		}
+        setIsLoading(false);
 	};
 
-	return (
+	return isLoading ? (
+		<ReactLoading className="mx-auto mt-64" type={"spin"} color={"black"} height={100} width={100} />
+	) : (
 		<form
 			className="flex flex-col md:w-7/12 mx-auto my-24 items-center gap-8"
 			onSubmit={onLogin}

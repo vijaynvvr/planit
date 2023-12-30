@@ -1,14 +1,15 @@
-import React, { useState, useContext } from "react";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import UserContext from "../context/UserContext";
+import ReactLoading from "react-loading";
 
 const SignupForm = () => {
     // const {isLoggedIn} = useContext(UserContext);
     // if (isLoggedIn) return <Navigate to="/profile"/>
 	const navigate = useNavigate();
     // if (isLoggedIn) navigate("/profile");
+    const [isLoading, setIsLoading] = useState(false);
 
     const validateContactInfo = (email, password) => {
         if (email && password)
@@ -34,6 +35,7 @@ const SignupForm = () => {
 	};
 
 	const onSignup = async (event) => {
+        setIsLoading(true);
         event.preventDefault();
         if (validateContactInfo(userInfo.name, userInfo.email, userInfo.password)) {
             const data = await fetch(
@@ -58,8 +60,11 @@ const SignupForm = () => {
         else {
             warning("Please fill all details");
         }
+        setIsLoading(false);
 	};
-	return (
+	return isLoading ? (
+		<ReactLoading className="mx-auto mt-64" type={"spin"} color={"black"} height={100} width={100} />
+	) : (        
 		<form
 			className="flex flex-col md:w-7/12 mx-auto my-24 items-center gap-8"
 			onSubmit={onSignup}

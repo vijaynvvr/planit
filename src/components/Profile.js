@@ -5,11 +5,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProfileCard from "./ProfileCard";
 import { TiDeleteOutline } from "react-icons/ti";
+import ReactLoading from "react-loading";
 
 const Profile = () => {
-	const {username, email} = useContext(UserContext);
+	const { username, email } = useContext(UserContext);
 	// if (!isLoggedIn) return <Navigate to="/login"/>
 	// if (!isLoggedIn) navigate('/login');
+	const [isLoading, setIsLoading] = useState(false);
+
 	const INITIAL_USERINFO = {
 		title: "",
 		body: "",
@@ -19,19 +22,20 @@ const Profile = () => {
 	const [myTodoList, setMyTodoList] = useState([]);
 
 	useEffect(() => {
-        const fetchMyTodos = async () => {
-        	const data = await fetch(
-        		process.env.BACKEND_URL + "api/todo/getTodos",
-        		{
-        			credentials: "include",
-        		}
-        	);
-        	const todoJson = await data.json();
-        	setMyTodoList(todoJson.data);
-        };
+		const fetchMyTodos = async () => {
+			const data = await fetch(
+				process.env.BACKEND_URL + "api/todo/getTodos",
+				{
+					credentials: "include",
+				}
+			);
+			const todoJson = await data.json();
+			setMyTodoList(todoJson.data);
+		};
+		setIsLoading(true);
 		fetchMyTodos();
+		setIsLoading(false);
 	}, []);
-
 
 	const validateTodos = (title, body) => {
 		if (title && body) return true;
@@ -60,9 +64,11 @@ const Profile = () => {
 	const addTodos = async (event) => {
 		event.preventDefault();
 		if (validateTodos(todos.title, todos.body)) {
-			const data = await fetch(`${process.env.BACKEND_URL}api/todo/createTodo`, {
+			const data = await fetch(
+				`${process.env.BACKEND_URL}api/todo/createTodo`,
+				{
 					method: "POST",
-					headers: {"Content-Type": "application/json"},
+					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify(todos),
 					credentials: "include", // to include cookies and headers
 				}
@@ -71,7 +77,7 @@ const Profile = () => {
 			if (jsonData.success) {
 				setTodos(INITIAL_USERINFO);
 				success("Todo added");
-                setMyTodoList(prev => [...prev, jsonData.data]);
+				setMyTodoList((prev) => [...prev, jsonData.data]);
 			} else {
 				warning(jsonData.message);
 			}
@@ -80,26 +86,29 @@ const Profile = () => {
 		}
 	};
 
-    const deleteTodo = async (id) => {
-        try {
-            // Make a DELETE request to your backend API to delete the todo by ID
-            const response = await fetch(`${process.env.BACKEND_URL}api/todo/deleteTodo/${id}`, {
-                method: 'DELETE',
-                credentials: 'include',
-            });
-            const jsonData = await response.json();
-            if (jsonData.success) {
-                // If the deletion was successful, update the local state to remove the deleted todo
-                setMyTodoList(prev => prev.filter(todo => todo._id !== id));
-                success('Todo deleted');
-            } else {
-                warning(jsonData.message || 'Failed to delete todo');
-            }
-        } catch (error) {
-            console.error('Error deleting todo:', error);
-            warning('Failed to delete todo');
-        }
-    }
+	const deleteTodo = async (id) => {
+		try {
+			// Make a DELETE request to your backend API to delete the todo by ID
+			const response = await fetch(
+				`${process.env.BACKEND_URL}api/todo/deleteTodo/${id}`,
+				{
+					method: "DELETE",
+					credentials: "include",
+				}
+			);
+			const jsonData = await response.json();
+			if (jsonData.success) {
+				// If the deletion was successful, update the local state to remove the deleted todo
+				setMyTodoList((prev) => prev.filter((todo) => todo._id !== id));
+				success("Todo deleted");
+			} else {
+				warning(jsonData.message || "Failed to delete todo");
+			}
+		} catch (error) {
+			console.error("Error deleting todo:", error);
+			warning("Failed to delete todo");
+		}
+	};
 
 	return (
 		<Fragment>
@@ -108,7 +117,12 @@ const Profile = () => {
 				onSubmit={addTodos}
 			>
 				<h1 className="text-4xl font-bold">Plan yo day</h1>
-                <ProfileCard className="w-full" icon={username[0].toUpperCase()} name={username} email={email}/>
+				<ProfileCard
+					className="w-full"
+					icon={username[0].toUpperCase()}
+					name={username}
+					email={email}
+				/>
 				<input
 					className="w-full p-2 border-2 border-black focus:rounded-lg"
 					type="text"
@@ -130,17 +144,37 @@ const Profile = () => {
 				</button>
 			</form>
 			<ul className="flex flex-col sm:w-10/12 md:w-9/12 lg:w-7/12 mx-auto my-12 gap-4 px-2">
-				{myTodoList?.map((todo) => {
-					return (
-						<li key={todo._id} className="flex justify-between items-center">
-                            <div>
-                                <h1 className="font-bold text-xl">{todo.title}</h1>
-                                <p className="text-lg">{todo.body}</p>
-                            </div>
-                            <span className="text-4xl hover:text-gray-400" onClick={() => deleteTodo(todo._id)}><TiDeleteOutline /></span>
-						</li>
-					);
-				})}
+				{isLoading ? (
+					<ReactLoading
+						className="mx-auto mt-14"
+						type={"spin"}
+						color={"black"}
+						height={100}
+						width={100}
+					/>
+				) : (
+					myTodoList?.map((todo) => {
+						return (
+							<li
+								key={todo._id}
+								className="flex justify-between items-center"
+							>
+								<div>
+									<h1 className="font-bold text-xl">
+										{todo.title}
+									</h1>
+									<p className="text-lg">{todo.body}</p>
+								</div>
+								<span
+									className="text-4xl hover:text-gray-400"
+									onClick={() => deleteTodo(todo._id)}
+								>
+									<TiDeleteOutline />
+								</span>
+							</li>
+						);
+					})
+				)}
 			</ul>
 			<ToastContainer autoClose={1000} />
 		</Fragment>
