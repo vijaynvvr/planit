@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
-import ReactLoading from "react-loading";
+import Loader from "./Loader";
 
 const Hero = () => {
 	const [query, setQuery] = useState("");
@@ -62,13 +62,7 @@ const Hero = () => {
 			</div>
 			<ul className="flex flex-col gap-4">
 				{isLoading ? (
-					<ReactLoading
-						className="mx-auto mt-14"
-						type={"spin"}
-						color={"black"}
-						height={100}
-						width={100}
-					/>
+					<Loader className="mt-14" />
 				) : (
 					userData &&
 					userData.map((user) => {

@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProfileCard from "./ProfileCard";
 import { TiDeleteOutline } from "react-icons/ti";
-import ReactLoading from "react-loading";
+import Loader from "./Loader";
 
 const Profile = () => {
 	const { username, email } = useContext(UserContext);
@@ -33,7 +33,7 @@ const Profile = () => {
 			setMyTodoList(todoJson.data);
 		};
 		fetchMyTodos();
-		setIsLoading(false);
+		// setIsLoading(false);
 	}, []);
 
 	const validateTodos = (title, body) => {
@@ -143,19 +143,13 @@ const Profile = () => {
 			<ul className="flex flex-col sm:w-10/12 md:w-9/12 lg:w-7/12 mx-auto my-12 gap-4 px-2">
 				{myTodoList.length ? (
                     isLoading ? (
-                        <ReactLoading
-                            className="mx-auto mt-2"
-                            type={"spin"}
-                            color={"black"}
-                            height={100}
-                            width={100}
-                        />
+                        <Loader className="mt-2" />
                     ) : (
                         myTodoList.map((todo) => {
                             return (
                                 <li
                                     key={todo._id}
-                                    className="flex justify-between items-center"
+                                    className="flex justify-between items-center shadow-lg rounded-lg p-2"
                                 >
                                     <div>
                                         <h1 className="font-bold text-xl">
@@ -164,7 +158,7 @@ const Profile = () => {
                                         <p className="text-lg">{todo.body}</p>
                                     </div>
                                     <span
-                                        className="text-4xl hover:text-gray-400"
+                                        className="text-4xl hover:text-gray-400 cursor-pointer"
                                         onClick={() => deleteTodo(todo._id)}
                                     >
                                         <TiDeleteOutline />

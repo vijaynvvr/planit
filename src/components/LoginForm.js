@@ -3,7 +3,7 @@ import { Link, useNavigate, Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserContext from "../context/UserContext";
-import ReactLoading from "react-loading";
+import Loader from "./Loader";
 
 const LoginForm = () => {
 	const { isLoggedIn, loginHandler } = useContext(UserContext);
@@ -67,7 +67,7 @@ const LoginForm = () => {
 	};
 
 	return isLoading ? (
-		<ReactLoading className="mx-auto mt-64" type={"spin"} color={"black"} height={100} width={100} />
+		<Loader className="mt-64" />
 	) : (
 		<form
 			className="flex flex-col md:w-7/12 mx-auto my-24 items-center gap-8"

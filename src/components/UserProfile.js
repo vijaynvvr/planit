@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import ProfileCard from "./ProfileCard";
-import ReactLoading from "react-loading";
+import Loader from "./Loader";
 
 const UserProfile = () => {
 	const [myTodoList, setMyTodoList] = useState([]);
@@ -48,17 +48,11 @@ const UserProfile = () => {
 			/>
 			{myTodoList.length ? (
 				isLoading ? (
-					<ReactLoading
-						className="mx-auto mt-14"
-						type={"spin"}
-						color={"black"}
-						height={100}
-						width={100}
-					/>
+					<Loader className="mt-14" />
 				) : (
 					myTodoList.map((todo) => {
 						return (
-							<div key={todo._id} className="flex flex-col gap-2">
+							<div key={todo._id} className="flex flex-col gap-2 shadow-lg rounded-lg p-2">
 								<h1 className="font-bold text-xl">
 									{todo.title}
 								</h1>
