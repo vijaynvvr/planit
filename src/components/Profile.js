@@ -149,7 +149,7 @@ const Profile = () => {
                             return (
                                 <li
                                     key={todo._id}
-                                    className="flex justify-between items-center shadow-lg rounded-lg p-2"
+                                    className="flex justify-between items-center shadow-md hover:shadow-lg rounded-lg p-2"
                                 >
                                     <div>
                                         <h1 className="font-bold text-xl">

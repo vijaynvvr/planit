@@ -52,7 +52,7 @@ const UserProfile = () => {
 				) : (
 					myTodoList.map((todo) => {
 						return (
-							<div key={todo._id} className="flex flex-col gap-2 shadow-lg rounded-lg p-2">
+							<div key={todo._id} className="flex flex-col gap-2 shadow-md hover:shadow-lg rounded-lg p-2">
 								<h1 className="font-bold text-xl">
 									{todo.title}
 								</h1>
