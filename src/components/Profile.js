@@ -33,7 +33,7 @@ const Profile = () => {
 			setMyTodoList(todoJson.data);
 		};
 		fetchMyTodos();
-		// setIsLoading(false);
+		setIsLoading(false);
 	}, []);
 
 	const validateTodos = (title, body) => {
