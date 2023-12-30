@@ -11,7 +11,7 @@ const UserProfile = () => {
 		name: "",
 		email: "",
 	});
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const { id } = useParams();
 
@@ -35,7 +35,6 @@ const UserProfile = () => {
 				email: jsonUserData.data.email,
 			});
 		};
-		setIsLoading(true);
 		fetchMyTodos();
 		setIsLoading(false);
 	}, []);
@@ -47,23 +46,27 @@ const UserProfile = () => {
 				name={userData.name}
 				email={userData.email}
 			/>
-			{isLoading ? (
-				<ReactLoading
-					className="mx-auto mt-14"
-					type={"spin"}
-					color={"black"}
-					height={100}
-					width={100}
-				/>
-			) : myTodoList.length ? (
-				myTodoList?.map((todo) => {
-					return (
-						<div key={todo._id} className="flex flex-col gap-2">
-							<h1 className="font-bold text-xl">{todo.title}</h1>
-							<p className="text-lg">{todo.body}</p>
-						</div>
-					);
-				})
+			{myTodoList.length ? (
+				isLoading ? (
+					<ReactLoading
+						className="mx-auto mt-14"
+						type={"spin"}
+						color={"black"}
+						height={100}
+						width={100}
+					/>
+				) : (
+					myTodoList.map((todo) => {
+						return (
+							<div key={todo._id} className="flex flex-col gap-2">
+								<h1 className="font-bold text-xl">
+									{todo.title}
+								</h1>
+								<p className="text-lg">{todo.body}</p>
+							</div>
+						);
+					})
+				)
 			) : (
 				<h1 className="text-center text-2xl my-12">No plannings yet</h1>
 			)}

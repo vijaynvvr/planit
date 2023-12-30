@@ -11,7 +11,7 @@ const Profile = () => {
 	const { username, email } = useContext(UserContext);
 	// if (!isLoggedIn) return <Navigate to="/login"/>
 	// if (!isLoggedIn) navigate('/login');
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const INITIAL_USERINFO = {
 		title: "",
@@ -32,7 +32,6 @@ const Profile = () => {
 			const todoJson = await data.json();
 			setMyTodoList(todoJson.data);
 		};
-		setIsLoading(true);
 		fetchMyTodos();
 		setIsLoading(false);
 	}, []);
@@ -88,7 +87,6 @@ const Profile = () => {
 
 	const deleteTodo = async (id) => {
 		try {
-			// Make a DELETE request to your backend API to delete the todo by ID
 			const response = await fetch(
 				`${process.env.BACKEND_URL}api/todo/deleteTodo/${id}`,
 				{
@@ -98,7 +96,6 @@ const Profile = () => {
 			);
 			const jsonData = await response.json();
 			if (jsonData.success) {
-				// If the deletion was successful, update the local state to remove the deleted todo
 				setMyTodoList((prev) => prev.filter((todo) => todo._id !== id));
 				success("Todo deleted");
 			} else {
@@ -144,37 +141,41 @@ const Profile = () => {
 				</button>
 			</form>
 			<ul className="flex flex-col sm:w-10/12 md:w-9/12 lg:w-7/12 mx-auto my-12 gap-4 px-2">
-				{isLoading ? (
-					<ReactLoading
-						className="mx-auto mt-14"
-						type={"spin"}
-						color={"black"}
-						height={100}
-						width={100}
-					/>
-				) : (
-					myTodoList?.map((todo) => {
-						return (
-							<li
-								key={todo._id}
-								className="flex justify-between items-center"
-							>
-								<div>
-									<h1 className="font-bold text-xl">
-										{todo.title}
-									</h1>
-									<p className="text-lg">{todo.body}</p>
-								</div>
-								<span
-									className="text-4xl hover:text-gray-400"
-									onClick={() => deleteTodo(todo._id)}
-								>
-									<TiDeleteOutline />
-								</span>
-							</li>
-						);
-					})
-				)}
+				{myTodoList.length ? (
+                    isLoading ? (
+                        <ReactLoading
+                            className="mx-auto mt-2"
+                            type={"spin"}
+                            color={"black"}
+                            height={100}
+                            width={100}
+                        />
+                    ) : (
+                        myTodoList.map((todo) => {
+                            return (
+                                <li
+                                    key={todo._id}
+                                    className="flex justify-between items-center"
+                                >
+                                    <div>
+                                        <h1 className="font-bold text-xl">
+                                            {todo.title}
+                                        </h1>
+                                        <p className="text-lg">{todo.body}</p>
+                                    </div>
+                                    <span
+                                        className="text-4xl hover:text-gray-400"
+                                        onClick={() => deleteTodo(todo._id)}
+                                    >
+                                        <TiDeleteOutline />
+                                    </span>
+                                </li>
+                            );
+                        })
+                    )
+                ) : (
+                    <h1 className="text-center text-2xl my-6">No plannings yet</h1>
+                )}
 			</ul>
 			<ToastContainer autoClose={1000} />
 		</Fragment>
