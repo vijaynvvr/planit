@@ -4,6 +4,7 @@ const UserContext = createContext({
 	isLoggedIn: false,
     username: "",
     email: "",
+    visibility: true,
 	loginHandler: () => {},
 	logoutHandler: () => {},
 });
@@ -12,7 +13,8 @@ export const UserContextProvider = (props) => {
 	const [userData, setUserData] = useState({
         isLoggedIn: false,
         username: "",
-        email: ""
+        email: "",
+        visibility: true
     });
 
     const fetchUserDetails = async () => {
@@ -27,7 +29,8 @@ export const UserContextProvider = (props) => {
             setUserData({
                 isLoggedIn: true,
                 username: userInfo.data.name,
-                email: userInfo.data.email
+                email: userInfo.data.email,
+                visibility: userInfo.data.visibility
             });
         }
     };
@@ -45,7 +48,8 @@ export const UserContextProvider = (props) => {
 		setUserData({
             isLoggedIn: false,
             username: "",
-            email: ""
+            email: "",
+            visibility: true
         });
 	};
 
@@ -56,11 +60,14 @@ export const UserContextProvider = (props) => {
 	return (
 		<UserContext.Provider
 			value={{
+                userData: userData,
 				isLoggedIn: userData.isLoggedIn,
                 username: userData.username,
                 email: userData.email,
+                visibility: userData.visibility,
 				loginHandler: loginHandler,
 				logoutHandler: logoutHandler,
+                setUserData: setUserData
 			}}
 		>
 			{props.children}
