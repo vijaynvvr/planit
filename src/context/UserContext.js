@@ -1,10 +1,12 @@
 import { createContext, useState, useEffect } from "react";
 
 const UserContext = createContext({
-	isLoggedIn: false,
-    username: "",
-    email: "",
-    visibility: true,
+	userData: {
+        isLoggedIn: false,
+        username: "",
+        email: "",
+        visibility: true,
+    },
 	loginHandler: () => {},
 	logoutHandler: () => {},
 });
@@ -62,9 +64,6 @@ export const UserContextProvider = (props) => {
 			value={{
                 userData: userData,
 				isLoggedIn: userData.isLoggedIn,
-                username: userData.username,
-                email: userData.email,
-                visibility: userData.visibility,
 				loginHandler: loginHandler,
 				logoutHandler: logoutHandler,
                 setUserData: setUserData

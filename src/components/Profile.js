@@ -8,7 +8,7 @@ import Loader from "./Loader";
 import UpdateTodoModal from "./UpdateTodoModal";
 
 const Profile = () => {
-	const { username, email, visibility, setUserData } = useContext(UserContext);
+	const { userData, setUserData } = useContext(UserContext);
 	// if (!isLoggedIn) return <Navigate to="/login"/>
 	// if (!isLoggedIn) navigate('/login');
 	const [isLoading, setIsLoading] = useState(true);
@@ -139,7 +139,7 @@ const Profile = () => {
 	const changeUserVisibility = async (status) => {
 		try {
 			const response = await fetch(
-				`${process.env.BACKEND_URL}api/auth/updateVisibility/${email}`,
+				`${process.env.BACKEND_URL}api/auth/updateVisibility/${userData.email}`,
 				{
 					method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -162,28 +162,28 @@ const Profile = () => {
 	return (
 		<Fragment>
 			<form
-				className="flex flex-col sm:w-10/12 md:w-9/12 lg:w-7/12 mx-auto my-12 items-center gap-8"
+				className="flex flex-col sm:w-10/12 md:w-9/12 lg:w-7/12 mx-auto my-12 items-center gap-4"
 				onSubmit={addTodos}
 			>
-				<h1 className="text-4xl font-bold">Plan yo day</h1>
+				{/* <h1 className="text-4xl font-bold">Plan yo day</h1> */}
 				<ProfileCard
 					// className="w-full"
-					icon={username[0].toUpperCase()}
-					name={username}
-					email={email}
+					icon={userData.username[0].toUpperCase()}
+					name={userData.username}
+					email={userData.email}
 				/>
-				<div className="px-1 py-1 border-2 border-gray-500 flex shadow-6xl rounded-xl">
+				<div className="px-1 py-1 border-2 border-gray-500 flex shadow-6xl rounded-full">
 					{/* explicitly mentioning type:button so that it doesn't trigger submit functionility (it is inside form) */}
                     <button
 						type="button"
-						className={`rounded-2xl px-4 py-2 ${!visibility && 'border-2 bg-gray-200 border-gray-500'}`}
+						className={`rounded-full px-4 py-2 ${!userData.visibility && 'border-2 bg-gray-200 border-gray-500'}`}
                         onClick={() => changeUserVisibility(false)}
 					>
 						Private
 					</button>
 					<button
 						type="button"
-						className={`rounded-2xl px-4 py-2 ${visibility && 'border-2 bg-gray-200  border-gray-500'}`}
+						className={`rounded-full px-4 py-2 ${userData.visibility && 'border-2 bg-gray-200  border-gray-500'}`}
                         onClick={() => changeUserVisibility(true)}
 					>
 						Public
@@ -231,14 +231,14 @@ const Profile = () => {
 									<span className="flex text-3xl gap-2">
 										{todo.status ? (
 											<TiTick
-												className="cursor-pointer"
+												className="cursor-pointer hover:text-gray-400"
 												onClick={() =>
 													updateStatus(todo._id)
 												}
 											/>
 										) : (
 											<TiTickOutline
-												className="cursor-pointer"
+												className="cursor-pointer hover:text-gray-400"
 												onClick={() =>
 													updateStatus(todo._id)
 												}
