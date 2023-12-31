@@ -126,7 +126,6 @@ const Profile = () => {
 							: todo
 					)
 				);
-
 				success("Status changed");
 			} else {
 				warning(jsonData.message || "Failed to update status");
