@@ -73,7 +73,7 @@ const LoginForm = () => {
 			className="flex flex-col md:w-7/12 mx-auto my-24 items-center gap-8"
 			onSubmit={onLogin}
 		>
-			<h1 className="text-4xl font-bold">Login Form</h1>
+			<h1 className="text-4xl font-bold">Login</h1>
 			<input
 				className="p-2 border-2 border-black"
 				type="email"
