@@ -1,23 +1,20 @@
 import { createContext, useState, useEffect } from "react";
 
+const INIT_USER_INFO = {
+    isLoggedIn: true,
+    username: "",
+    email: "",
+    visibility: true,
+}
+
 const UserContext = createContext({
-	userData: {
-        isLoggedIn: false,
-        username: "",
-        email: "",
-        visibility: true,
-    },
+	userData: INIT_USER_INFO,
 	loginHandler: () => {},
 	logoutHandler: () => {},
 });
 
 export const UserContextProvider = (props) => {
-	const [userData, setUserData] = useState({
-        isLoggedIn: false,
-        username: "",
-        email: "",
-        visibility: true
-    });
+	const [userData, setUserData] = useState(INIT_USER_INFO);
 
     const fetchUserDetails = async () => {
         const data = await fetch(
@@ -35,6 +32,9 @@ export const UserContextProvider = (props) => {
                 visibility: userInfo.data.visibility
             });
         }
+        else {
+            setUserData({...INIT_USER_INFO, isLoggedIn: false})
+        }
     };
 
 	useEffect(() => {
@@ -47,12 +47,7 @@ export const UserContextProvider = (props) => {
                 credentials: "include",
             }
         );
-		setUserData({
-            isLoggedIn: false,
-            username: "",
-            email: "",
-            visibility: true
-        });
+		setUserData({...INIT_USER_INFO, isLoggedIn: false});
 	};
 
 	const loginHandler = () => {
@@ -62,11 +57,11 @@ export const UserContextProvider = (props) => {
 	return (
 		<UserContext.Provider
 			value={{
-                userData: userData,
 				isLoggedIn: userData.isLoggedIn,
+                userData: userData,
+                setUserData: setUserData,
 				loginHandler: loginHandler,
-				logoutHandler: logoutHandler,
-                setUserData: setUserData
+				logoutHandler: logoutHandler
 			}}
 		>
 			{props.children}

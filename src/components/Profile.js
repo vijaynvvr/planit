@@ -167,7 +167,7 @@ const Profile = () => {
 				{/* <h1 className="text-4xl font-bold">Plan yo day</h1> */}
 				<ProfileCard
 					// className="w-full"
-					icon={userData.username[0].toUpperCase()}
+					icon={userData.username[0]?.toUpperCase()}
 					name={userData.username}
 					email={userData.email}
 				/>

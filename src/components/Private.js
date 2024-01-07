@@ -3,9 +3,9 @@ import { Navigate, Outlet } from "react-router-dom";
 import UserContext from "../context/UserContext";
 
 const Private = () => {
-	const { isLoggedIn } = useContext(UserContext);
+	const { userData } = useContext(UserContext);
     return (
-        isLoggedIn ? <Outlet /> : <Navigate to="/login" />
+        userData.isLoggedIn ? <Outlet /> : <Navigate to="/login" />
     );
 };
 

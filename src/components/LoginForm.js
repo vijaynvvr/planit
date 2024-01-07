@@ -6,7 +6,7 @@ import UserContext from "../context/UserContext";
 import Loader from "./Loader";
 
 const LoginForm = () => {
-	const { isLoggedIn, loginHandler } = useContext(UserContext);
+	const { loginHandler } = useContext(UserContext);
 	// if (isLoggedIn) return <Navigate to="/profile"/>
 	const navigate = useNavigate();
 	// if (isLoggedIn) navigate("/profile");

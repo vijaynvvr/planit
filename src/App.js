@@ -14,8 +14,6 @@ import Public from "./components/Public";
 import UserProfile from "./components/UserProfile";
 config();
 
-const BACKEND_URL = process.env.BACKEND_URL;
-
 const App = () => {
     return (
         <UserContextProvider>
