@@ -68,6 +68,7 @@ const LoginForm = () => {
 
 	return isLoading ? (
 		<Loader className="mt-64" />
+        // <div className="w-56 h-56 border-4 border-y-black border-x-transparent rounded-full animate-spin"></div>
 	) : (
 		<form
 			className="flex flex-col md:w-7/12 mx-auto my-24 items-center gap-8"
