@@ -7,11 +7,13 @@ import SignupForm from "./components/SignupForm";
 import Profile from "./components/Profile";
 import Error from "./components/Error";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
-import {config} from 'dotenv';
 import { UserContextProvider } from "./context/UserContext";
 import Private from "./components/Private";
 import Public from "./components/Public";
 import UserProfile from "./components/UserProfile";
+import { inject } from '@vercel/analytics';
+inject();
+import {config} from 'dotenv';
 config();
 
 const App = () => {
